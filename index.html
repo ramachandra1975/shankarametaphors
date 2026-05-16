@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase 4 — Shankaracharya Metaphor Decoders | Vedic-Computational Codex</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0b0914;
+  --bg2:      #110f1e;
+  --bg3:      #181428;
+  --card:     #1c1830;
+  --card2:    #221e38;
+  --border:   rgba(180,160,255,0.12);
+  --border2:  rgba(180,160,255,0.25);
+  --border3:  rgba(180,160,255,0.45);
+  --gold:     #c9a84c;
+  --gold2:    #e8c97a;
+  --gold3:    #f5e4a8;
+  --violet:   #7c6af5;
+  --violet2:  #a599f7;
+  --teal:     #2ec4a0;
+  --teal2:    #5edbc0;
+  --coral:    #e0704a;
+  --coral2:   #f0956e;
+  --text:     #e8e4f8;
+  --text2:    #a89ec8;
+  --text3:    #6a6088;
+  --mono:     'JetBrains Mono', monospace;
+  --serif:    'EB Garamond', serif;
+  --display:  'Cinzel', serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.75;
+  min-height: 100vh;
+}
+
+/* ── BACKGROUND GEOMETRY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(124,106,245,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 80% 80%, rgba(201,168,76,0.06) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+.site-header {
+  position: relative;
+  z-index: 10;
+  padding: 64px 48px 48px;
+  border-bottom: 1px solid var(--border);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.phase-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.phase-badge::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.6;
+}
+.site-header h1 {
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 700;
+  color: var(--gold2);
+  letter-spacing: 1px;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.site-header h1 em {
+  font-style: italic;
+  color: var(--gold3);
+  font-family: var(--serif);
+  font-size: 0.75em;
+}
+.site-header p {
+  font-size: 17px;
+  color: var(--text2);
+  max-width: 640px;
+  line-height: 1.8;
+}
+.header-meta {
+  display: flex;
+  gap: 32px;
+  margin-top: 28px;
+}
+.header-meta span {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 1px;
+}
+.header-meta span b {
+  color: var(--violet2);
+  font-weight: 400;
+}
+
+/* ── MAIN LAYOUT ── */
+.main {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 48px 80px;
+}
+
+/* ── METAPHOR SELECTOR ── */
+.metaphor-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 48px;
+}
+.meta-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+.meta-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.meta-btn:hover { border-color: var(--border2); transform: translateY(-2px); }
+.meta-btn.active { border-color: var(--border3); }
+.meta-btn.active::before { opacity: 1; }
+
+.meta-btn[data-color="gold"]::before   { background: linear-gradient(135deg, rgba(201,168,76,0.08), transparent); }
+.meta-btn[data-color="teal"]::before   { background: linear-gradient(135deg, rgba(46,196,160,0.08), transparent); }
+.meta-btn[data-color="violet"]::before { background: linear-gradient(135deg, rgba(124,106,245,0.08), transparent); }
+.meta-btn[data-color="coral"]::before  { background: linear-gradient(135deg, rgba(224,112,74,0.08), transparent); }
+.meta-btn.active[data-color="gold"]   { border-color: rgba(201,168,76,0.5); }
+.meta-btn.active[data-color="teal"]   { border-color: rgba(46,196,160,0.5); }
+.meta-btn.active[data-color="violet"] { border-color: rgba(124,106,245,0.5); }
+.meta-btn.active[data-color="coral"]  { border-color: rgba(224,112,74,0.5); }
+
+.meta-btn-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+.meta-btn-num[data-color="gold"]   { color: var(--gold); }
+.meta-btn-num[data-color="teal"]   { color: var(--teal); }
+.meta-btn-num[data-color="violet"] { color: var(--violet2); }
+.meta-btn-num[data-color="coral"]  { color: var(--coral2); }
+.meta-btn-title {
+  font-family: var(--display);
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 6px;
+}
+.meta-btn-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  line-height: 1.4;
+}
+.active .meta-btn-sub { opacity: 0.8; }
+
+/* ── DETAIL PANEL ── */
+.detail {
+  display: none;
+  animation: fadeSlide 0.35s ease forwards;
+}
+.detail.active { display: block; }
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.detail-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+.verse-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+}
+.verse-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+}
+.vc-gold::before   { background: linear-gradient(90deg, var(--gold), transparent); }
+.vc-teal::before   { background: linear-gradient(90deg, var(--teal), transparent); }
+.vc-violet::before { background: linear-gradient(90deg, var(--violet2), transparent); }
+.vc-coral::before  { background: linear-gradient(90deg, var(--coral), transparent); }
+
+.verse-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.vc-gold .verse-label   { color: var(--gold); }
+.vc-teal .verse-label   { color: var(--teal); }
+.vc-violet .verse-label { color: var(--violet2); }
+.vc-coral .verse-label  { color: var(--coral2); }
+
+.verse-text {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.9;
+  margin-bottom: 8px;
+}
+.verse-ref {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+}
+.verse-translation {
+  font-family: var(--serif);
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.85;
+}
+
+/* ── BODY SECTION ── */
+.detail-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.left-col, .right-col { display: flex; flex-direction: column; gap: 20px; }
+
+.section-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+}
+.section-block h3 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 14px;
+}
+.analogy-text {
+  font-size: 15px;
+  color: var(--text2);
+  line-height: 1.85;
+}
+
+/* ── EQUATION BLOCK ── */
+.eq-block {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+.eq-block code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--violet2);
+  line-height: 2;
+  display: block;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ── INTERACTIVE AREA ── */
+.interactive-block {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 28px;
+}
+.interactive-block h3 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 18px;
+}
+
+/* slider */
+.ctrl-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.ctrl-row label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+  min-width: 130px;
+}
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border2);
+  outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--bg);
+}
+input[type=range].gold-thumb::-webkit-slider-thumb   { background: var(--gold); }
+input[type=range].teal-thumb::-webkit-slider-thumb   { background: var(--teal); }
+input[type=range].violet-thumb::-webkit-slider-thumb { background: var(--violet2); }
+input[type=range].coral-thumb::-webkit-slider-thumb  { background: var(--coral); }
+
+.ctrl-val {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 400;
+  min-width: 48px;
+  text-align: right;
+}
+.ctrl-val.gold   { color: var(--gold2); }
+.ctrl-val.teal   { color: var(--teal2); }
+.ctrl-val.violet { color: var(--violet2); }
+.ctrl-val.coral  { color: var(--coral2); }
+
+canvas.viz {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+  background: var(--bg3);
+}
+
+.output-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  border: 1px solid;
+}
+.output-pill.gold   { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.3); color: var(--gold2); }
+.output-pill.teal   { background: rgba(46,196,160,0.08); border-color: rgba(46,196,160,0.3); color: var(--teal2); }
+.output-pill.violet { background: rgba(124,106,245,0.08); border-color: rgba(124,106,245,0.3); color: var(--violet2); }
+.output-pill.coral  { background: rgba(224,112,74,0.08); border-color: rgba(224,112,74,0.3); color: var(--coral2); }
+.output-label { opacity: 0.6; }
+
+/* Pot shape selector */
+.shape-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.shape-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.shape-btn:hover { border-color: var(--border2); }
+.shape-btn.active { border-color: rgba(46,196,160,0.5); background: rgba(46,196,160,0.06); }
+.shape-btn svg { width: 40px; height: 40px; }
+.shape-btn span { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+.shape-btn.active span { color: var(--teal2); }
+
+/* Neti layers */
+.kosha-list { display: flex; flex-direction: column; gap: 8px; }
+.kosha-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  transition: all 0.4s ease;
+}
+.kosha-row.stripped {
+  opacity: 0.25;
+  text-decoration: line-through;
+  transform: translateX(-8px);
+}
+.kosha-name { flex: 1; font-family: var(--serif); font-size: 14px; color: var(--text); }
+.kosha-lambda { font-family: var(--mono); font-size: 11px; color: var(--text3); }
+.kosha-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.kosha-btn:hover:not(:disabled) { border-color: var(--violet2); color: var(--violet2); }
+.kosha-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.atman-reveal {
+  display: none;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(201,168,76,0.4);
+  background: rgba(201,168,76,0.06);
+  text-align: center;
+  animation: revealPulse 0.6s ease forwards;
+}
+.atman-reveal.show { display: block; }
+@keyframes revealPulse {
+  0%   { opacity: 0; transform: scale(0.95); }
+  60%  { transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.atman-reveal p {
+  font-family: var(--display);
+  font-size: 15px;
+  color: var(--gold2);
+  letter-spacing: 1px;
+}
+.atman-reveal small {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gold);
+  opacity: 0.7;
+}
+.neti-reset {
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.neti-reset:hover { color: var(--text2); border-color: var(--border3); }
+
+/* Tat Tvam Asi */
+.vector-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.stat-pill {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.stat-pill .stat-label { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+.stat-pill .stat-val   { font-family: var(--mono); font-size: 16px; font-weight: 400; }
+
+/* ── FOOTER ── */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 48px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-left { font-family: var(--mono); font-size: 10px; color: var(--text3); letter-spacing: 1px; }
+.footer-right a {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--violet2);
+  text-decoration: none;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(124,106,245,0.3);
+  padding-bottom: 1px;
+}
+
+@media (max-width: 860px) {
+  .metaphor-nav  { grid-template-columns: 1fr 1fr; }
+  .detail-header { grid-template-columns: 1fr; }
+  .detail-body   { grid-template-columns: 1fr; }
+  .site-header, .main, .site-footer { padding-left: 24px; padding-right: 24px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="phase-badge">Phase 4 &mdash; Module 5</div>
+  <h1>Shankaracharya's Metaphors<br><em>Decoded through Computational Mathematics</em></h1>
+  <p>Four Advaita Vedānta metaphors from Adi Shankaracharya — each an exact structural mirror of a modern AI/mathematical framework. Select a metaphor below to explore the Sanskrit source, the equation, and the interactive proof.</p>
+  <div class="header-meta">
+    <span>Tradition <b>Advaita Vedānta</b></span>
+    <span>Source texts <b>Vivekachūḍāmaṇi · Upaniṣads</b></span>
+    <span>AI Parallels <b>4 Equations</b></span>
+    <span>Phase <b>4 / 6</b></span>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- Selector -->
+  <nav class="metaphor-nav" aria-label="Metaphor selector">
+    <button class="meta-btn active" data-color="gold" data-target="m0" onclick="showMeta(0)">
+      <div class="meta-btn-num" data-color="gold">METAPHOR 01</div>
+      <div class="meta-btn-title">Rope &amp; Snake</div>
+      <div class="meta-btn-sub">Rajju-Sarpa · Loss function<br>Error surface optimization</div>
+    </button>
+    <button class="meta-btn" data-color="teal" data-target="m1" onclick="showMeta(1)">
+      <div class="meta-btn-num" data-color="teal">METAPHOR 02</div>
+      <div class="meta-btn-title">Clay &amp; Pots</div>
+      <div class="meta-btn-sub">Mrittikā-Ghata · Invariance<br>Latent feature encoder</div>
+    </button>
+    <button class="meta-btn" data-color="violet" data-target="m2" onclick="showMeta(2)">
+      <div class="meta-btn-num" data-color="violet">METAPHOR 03</div>
+      <div class="meta-btn-title">Neti Neti</div>
+      <div class="meta-btn-sub">Not this, Not this · PCA<br>Dimensionality reduction</div>
+    </button>
+    <button class="meta-btn" data-color="coral" data-target="m3" onclick="showMeta(3)">
+      <div class="meta-btn-num" data-color="coral">METAPHOR 04</div>
+      <div class="meta-btn-title">Tat Tvam Asi</div>
+      <div class="meta-btn-sub">That Thou Art · Identity gate<br>Quantum Bell state collapse</div>
+    </button>
+  </nav>
+
+  <!-- ═══════════════ METAPHOR 1: ROPE-SNAKE ═══════════════ -->
+  <section class="detail active" id="m0">
+    <div class="detail-header">
+      <div class="verse-card vc-gold">
+        <div class="verse-label">Sanskrit source — Vivekachūḍāmaṇi v.139</div>
+        <div class="verse-text">Rajjvāṃ sarpagraho yadvat tadvad ātmani dehadhīḥ</div>
+        <div class="verse-ref">Adi Shankaracharya, c. 788 CE</div>
+      </div>
+      <div class="verse-card vc-gold" style="border-color: var(--border);">
+        <div class="verse-label">Translation &amp; Analogy</div>
+        <div class="verse-translation">Just as a rope is mistaken for a snake in dim light (Avidyā), the body is mistaken for the Ātman due to ignorance. As illumination (Jñāna) increases, the false perception (snake / Māyā) dissolves and the ground truth (rope / Brahman) is revealed.</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="left-col">
+        <div class="section-block">
+          <h3>The AI Parallel</h3>
+          <p class="analogy-text">A neural network begins with random weights — this is Avidyā (ignorance). The loss function L(θ) measures the squared error between the model's perception and the ground truth. A regularisation term λ·Φ penalises incorrect priors. As training (illumination) progresses, λ→0 and the model converges to Y_truth — the snake dissolves, the rope remains.</p>
+        </div>
+        <div class="section-block">
+          <h3>Equation — Adhyāsa Error Surface</h3>
+          <div class="eq-block">
+            <code>L(θ) = (1/N) Σᵢ ‖f(Xᵢ; θ) − Y_truth‖²
+      + λ · Φ(Avidyā)
+
+where:
+  f(Xᵢ; θ)  = model perception (snake)
+  Y_truth    = Brahman (rope)
+  λ·Φ        = ignorance penalty
+  λ → 0      = rising illumination
+
+As Jñāna ↑ → λ → 0 → L(θ) → 0</code>
+          </div>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="interactive-block">
+          <h3>Interactive Proof — Illumination Slider</h3>
+          <div class="ctrl-row">
+            <label>Jñāna (Illumination)</label>
+            <input type="range" id="rs-sl" class="gold-thumb" min="0" max="100" value="8" step="1" oninput="updateRS()">
+            <span class="ctrl-val gold" id="rs-val">8%</span>
+          </div>
+          <div class="ctrl-row">
+            <label>λ (Ignorance penalty)</label>
+            <input type="range" id="lambda-sl" class="gold-thumb" min="0" max="100" value="92" step="1" oninput="syncLambda()">
+            <span class="ctrl-val gold" id="lambda-val">0.92</span>
+          </div>
+          <canvas class="viz" id="rs-canvas" height="200"></canvas>
+          <div id="rs-pill" class="output-pill gold">
+            <span class="output-label">Perceived reality →</span>
+            <span id="rs-out">Snake (Māyā) — L(θ) high</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ METAPHOR 2: CLAY-POTS ═══════════════ -->
+  <section class="detail" id="m1">
+    <div class="detail-header">
+      <div class="verse-card vc-teal">
+        <div class="verse-label">Sanskrit source — Chāndogya Upaniṣad 6.1.4</div>
+        <div class="verse-text">Mṛttikety eva satyaṃ — nāmarūpe mithyā eva</div>
+        <div class="verse-ref">~800 BCE</div>
+      </div>
+      <div class="verse-card vc-teal" style="border-color: var(--border);">
+        <div class="verse-label">Translation &amp; Analogy</div>
+        <div class="verse-translation">Clay alone is real — name and form are false. A pot, a plate, and a cup differ in name (nāma) and form (rūpa) but are 100% clay beneath. The universe changes in name and form but remains 100% Brahman in its substrate.</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="left-col">
+        <div class="section-block">
+          <h3>The AI Parallel</h3>
+          <p class="analogy-text">A deep encoder φ compresses different surface forms — pot, plate, cup — into a single invariant latent vector Z_Clay. No matter the geometry of the input, the deep representation is identical. This is the Advaitic principle: despite infinite variation in nāma-rūpa, the latent substrate (Brahman) remains unchanged.</p>
+        </div>
+        <div class="section-block">
+          <h3>Equation — Invariance Encoder</h3>
+          <div class="eq-block">
+            <code>φ(X_pot)   = Z_Clay
+φ(X_plate) = Z_Clay
+φ(X_cup)   = Z_Clay
+
+In the Advaitic context:
+φ(X_Universe) = Z_Brahman
+
+Invariant features: substance = 1.0
+Variable features:  name, form  = noise</code>
+          </div>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="interactive-block">
+          <h3>Interactive Proof — Shape Encoder</h3>
+          <div class="shape-grid">
+            <button class="shape-btn active" id="sb-pot" onclick="selectShape('pot')">
+              <svg viewBox="0 0 40 40" fill="none">
+                <ellipse cx="20" cy="33" rx="13" ry="4" fill="rgba(46,196,160,0.3)" stroke="#2ec4a0" stroke-width="1"/>
+                <rect x="9" y="14" width="22" height="20" rx="2" fill="rgba(46,196,160,0.2)" stroke="#2ec4a0" stroke-width="1"/>
+                <ellipse cx="20" cy="14" rx="11" ry="4" fill="rgba(46,196,160,0.35)" stroke="#2ec4a0" stroke-width="1"/>
+                <ellipse cx="20" cy="8"  rx="7"  ry="3" fill="rgba(46,196,160,0.25)" stroke="#2ec4a0" stroke-width="1"/>
+              </svg>
+              <span>Pot</span>
+            </button>
+            <button class="shape-btn" id="sb-plate" onclick="selectShape('plate')">
+              <svg viewBox="0 0 40 40" fill="none">
+                <ellipse cx="20" cy="24" rx="17" ry="6" fill="rgba(46,196,160,0.3)" stroke="#2ec4a0" stroke-width="1"/>
+                <ellipse cx="20" cy="20" rx="17" ry="5" fill="rgba(46,196,160,0.2)" stroke="#2ec4a0" stroke-width="1"/>
+              </svg>
+              <span>Plate</span>
+            </button>
+            <button class="shape-btn" id="sb-cup" onclick="selectShape('cup')">
+              <svg viewBox="0 0 40 40" fill="none">
+                <rect x="13" y="8"  width="14" height="24" rx="3" fill="rgba(46,196,160,0.2)" stroke="#2ec4a0" stroke-width="1"/>
+                <ellipse cx="20" cy="32" rx="7" ry="3" fill="rgba(46,196,160,0.3)" stroke="#2ec4a0" stroke-width="1"/>
+                <ellipse cx="20" cy="8"  rx="7" ry="3" fill="rgba(46,196,160,0.25)" stroke="#2ec4a0" stroke-width="1"/>
+              </svg>
+              <span>Cup</span>
+            </button>
+          </div>
+          <canvas class="viz" id="pot-canvas" height="150"></canvas>
+          <div class="output-pill teal" style="margin-top:12px">
+            <span class="output-label">Latent vector Z_Clay →</span>
+            <span id="pot-out">[0.913, 0.891, 0.927, 0.908]</span>
+          </div>
+          <p style="font-size:12px;color:var(--text3);margin-top:10px;font-family:var(--mono)">All shapes encode to the same Z_Clay — substance invariant.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ METAPHOR 3: NETI NETI ═══════════════ -->
+  <section class="detail" id="m2">
+    <div class="detail-header">
+      <div class="verse-card vc-violet">
+        <div class="verse-label">Sanskrit source — Bṛhadāraṇyaka Upaniṣad 2.3.6</div>
+        <div class="verse-text">Neti neti — na iti na iti</div>
+        <div class="verse-ref">~700 BCE</div>
+      </div>
+      <div class="verse-card vc-violet" style="border-color: var(--border);">
+        <div class="verse-label">Translation &amp; Analogy</div>
+        <div class="verse-translation">"Not this, not this." Brahman cannot be defined by any finite attribute. The method strips away each layer of identity — body, breath, mind, intellect — until only the irreducible, infinite Ātman remains. It is a negative dialectical algorithm.</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="left-col">
+        <div class="section-block">
+          <h3>The AI Parallel</h3>
+          <p class="analogy-text">Principal Component Analysis (PCA) operates identically. It computes eigenvalues (λ) for each data component. Low-λ components — those with little explanatory power, the transient and changing — are discarded one by one. The dominant eigenvector that survives every stripping is the invariant: in Vedānta, the Ātman; in machine learning, the core latent signal.</p>
+        </div>
+        <div class="section-block">
+          <h3>Equation — PCA Dimensionality Reduction</h3>
+          <div class="eq-block">
+            <code>Σ · v = λ · v
+
+where:
+  Σ  = covariance matrix of experience
+  v  = eigenvector (each layer of self)
+  λ  = eigenvalue (explanatory power)
+
+Neti Neti → drop all v where λ is small
+Dominant eigenvector = Ātman (λ = 1.0)</code>
+          </div>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="interactive-block">
+          <h3>Interactive Proof — Strip the Koshas</h3>
+          <div class="kosha-list" id="kosha-list">
+            <div class="kosha-row" id="kr-body">
+              <div class="kosha-name">Body — Annamaya Kosha</div>
+              <div class="kosha-lambda">λ = 0.12</div>
+              <button class="kosha-btn" id="kb-body" onclick="stripKosha('body')">Neti →</button>
+            </div>
+            <div class="kosha-row" id="kr-prana">
+              <div class="kosha-name">Breath — Prāṇamaya Kosha</div>
+              <div class="kosha-lambda">λ = 0.28</div>
+              <button class="kosha-btn" id="kb-prana" onclick="stripKosha('prana')">Neti →</button>
+            </div>
+            <div class="kosha-row" id="kr-mind">
+              <div class="kosha-name">Mind — Manomaya Kosha</div>
+              <div class="kosha-lambda">λ = 0.41</div>
+              <button class="kosha-btn" id="kb-mind" onclick="stripKosha('mind')">Neti →</button>
+            </div>
+            <div class="kosha-row" id="kr-vijana">
+              <div class="kosha-name">Intellect — Vijñānamaya Kosha</div>
+              <div class="kosha-lambda">λ = 0.63</div>
+              <button class="kosha-btn" id="kb-vijana" onclick="stripKosha('vijana')">Neti →</button>
+            </div>
+            <div class="kosha-row" id="kr-ananda">
+              <div class="kosha-name">Bliss — Ānandamaya Kosha</div>
+              <div class="kosha-lambda">λ = 0.79</div>
+              <button class="kosha-btn" id="kb-ananda" onclick="stripKosha('ananda')">Neti →</button>
+            </div>
+          </div>
+          <div class="atman-reveal" id="atman-reveal">
+            <p>Ātman — Pure Consciousness</p>
+            <small>DOMINANT EIGENVECTOR · λ = 1.000 · SAT-CHIT-ĀNANDA</small>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            <button class="neti-reset" onclick="resetNeti()">↺ Reset Koshas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ METAPHOR 4: TAT TVAM ASI ═══════════════ -->
+  <section class="detail" id="m3">
+    <div class="detail-header">
+      <div class="verse-card vc-coral">
+        <div class="verse-label">Sanskrit source — Chāndogya Upaniṣad 6.8.7</div>
+        <div class="verse-text">Tat tvam asi — śvetaketo</div>
+        <div class="verse-ref">~800 BCE · One of the four Mahāvākyas</div>
+      </div>
+      <div class="verse-card vc-coral" style="border-color: var(--border);">
+        <div class="verse-label">Translation &amp; Analogy</div>
+        <div class="verse-translation">"That thou art, Śvetaketu." The individual self (Jīvātman) and the Universal Absolute (Paramātman / Brahman) are not two separate things — they are mathematically identical. The appearance of separation is Māyā.</div>
+      </div>
+    </div>
+    <div class="detail-body">
+      <div class="left-col">
+        <div class="section-block">
+          <h3>The AI Parallel</h3>
+          <p class="analogy-text">Two quantum state vectors — the Jīva (individual) and the Īśvara (cosmic) — appear distinct. Passing them through the Mahāvākya unitary transformation gate (U) creates a maximally entangled Bell state. When the density matrix ρ of this entangled state is traced, it resolves to exactly 1 — the dualistic separation completely vanishes. Unity is not achieved; it is revealed.</p>
+        </div>
+        <div class="section-block">
+          <h3>Equation — Quantum Collapse Gate</h3>
+          <div class="eq-block">
+            <code>u^T · M · v = 1  (when M = Identity)
+
+Quantum formulation:
+U(|ψ_Jīva⟩ ⊗ |ψ_Īśvara⟩)
+  = (1/√2)(|00⟩ + |11⟩)  ← Bell state
+
+Tr(ρ_Advaita) = 1
+
+As angular distance θ → 0:
+  Jīva ≡ Brahman (Tat tvam asi)</code>
+          </div>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="interactive-block">
+          <h3>Interactive Proof — Vector Identity</h3>
+          <div class="ctrl-row">
+            <label>Jīvātman angle (u)</label>
+            <input type="range" id="jiva-sl" class="coral-thumb" min="0" max="180" value="40" step="1" oninput="updateTT()">
+            <span class="ctrl-val coral" id="jiva-val">40°</span>
+          </div>
+          <div class="ctrl-row">
+            <label>Paramātman angle (v)</label>
+            <input type="range" id="para-sl" class="coral-thumb" min="0" max="180" value="100" step="1" oninput="updateTT()">
+            <span class="ctrl-val coral" id="para-val">100°</span>
+          </div>
+          <canvas class="viz" id="tt-canvas" height="200"></canvas>
+          <div class="vector-stats">
+            <div class="stat-pill">
+              <div class="stat-label">u · v (dot product)</div>
+              <div class="stat-val" id="tt-dot" style="color:var(--coral2)">-0.50</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-label">Angular gap (θ)</div>
+              <div class="stat-val" id="tt-angle" style="color:var(--text2)">60°</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-label">Tr(ρ_Advaita)</div>
+              <div class="stat-val" id="tt-tr" style="color:var(--teal2)">1.000</div>
+            </div>
+          </div>
+          <div id="tt-pill" class="output-pill coral" style="margin-top:12px">
+            <span class="output-label">State →</span>
+            <span id="tt-out">Duality — separation visible</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-left">VEDIC-COMPUTATIONAL CODEX · PHASE 4 OF 6 · SHANKARACHARYA</div>
+  <div class="footer-right"><a href="phase5-vclu-pipeline.html">Phase 5: VCLU Pipeline →</a></div>
+</footer>
+
+<script>
+/* ── TAB LOGIC ── */
+var panels = ['m0','m1','m2','m3'];
+var btns;
+function showMeta(i) {
+  btns = document.querySelectorAll('.meta-btn');
+  panels.forEach(function(id,j){
+    document.getElementById(id).classList.toggle('active', j===i);
+    btns[j].classList.toggle('active', j===i);
+  });
+  if(i===0) { setTimeout(function(){drawRS(parseInt(document.getElementById('rs-sl').value));},50); }
+  if(i===1) { setTimeout(function(){drawPot(currentShape);},50); }
+  if(i===3) { setTimeout(function(){drawTT();},50); }
+}
+
+/* ══════════════════════════════════
+   METAPHOR 1 — ROPE-SNAKE
+══════════════════════════════════ */
+function syncLambda(){
+  var v = parseInt(document.getElementById('lambda-sl').value);
+  document.getElementById('rs-sl').value = 100 - v;
+  document.getElementById('lambda-val').textContent = (v/100).toFixed(2);
+  document.getElementById('rs-val').textContent = (100-v) + '%';
+  drawRS(100-v);
+}
+function updateRS(){
+  var v = parseInt(document.getElementById('rs-sl').value);
+  document.getElementById('rs-val').textContent = v + '%';
+  document.getElementById('lambda-sl').value = 100 - v;
+  document.getElementById('lambda-val').textContent = ((100-v)/100).toFixed(2);
+  drawRS(v);
+}
+function drawRS(v){
+  var c = document.getElementById('rs-canvas');
+  if(!c) return;
+  var W=c.offsetWidth||600, H=200;
+  c.width=W; c.height=H;
+  var ctx=c.getContext('2d');
+  ctx.fillStyle = '#181428';
+  ctx.fillRect(0,0,W,H);
+
+  var alpha = v/100;
+
+  /* ── draw rope (ground truth) ── */
+  if(alpha > 0.15) {
+    var ra = Math.min(1, (alpha-0.15)/0.55);
+    ctx.save();
+    ctx.globalAlpha = ra;
+    ctx.strokeStyle = '#c9a84c';
+    ctx.lineWidth = 6;
+    ctx.lineCap = 'round';
+    ctx.setLineDash([8,4]);
+    ctx.beginPath();
+    ctx.moveTo(40, H/2);
+    ctx.lineTo(W-40, H/2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font = '12px "JetBrains Mono"';
+    ctx.fillStyle = 'rgba(201,168,76,'+ra+')';
+    ctx.textAlign = 'center';
+    ctx.fillText('ROPE — Brahman (Y_truth)', W/2, H/2 - 18);
+    ctx.restore();
+  }
+
+  /* ── draw snake (false perception) ── */
+  var sa = Math.max(0, 1 - alpha * 1.3);
+  if(sa > 0.02) {
+    ctx.save();
+    ctx.globalAlpha = sa;
+    ctx.strokeStyle = '#e0704a';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    var pts = Math.floor(W/8);
+    for(var x=0; x<=W; x+=3) {
+      var t = x/W;
+      var y = H/2 + Math.sin(t*Math.PI*5)*28*(1-t*0.3) + Math.cos(t*Math.PI*8)*12;
+      x===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+    /* snake head */
+    ctx.fillStyle = '#e0704a';
+    ctx.beginPath(); ctx.ellipse(W-35, H/2+8, 14, 9, 0.3, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#181428';
+    ctx.beginPath(); ctx.arc(W-32, H/2+5, 3, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#f0956e';
+    /* tongue */
+    ctx.strokeStyle = '#f0956e'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(W-24,H/2+8); ctx.lineTo(W-14,H/2+4); ctx.lineTo(W-10,H/2+2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W-24,H/2+8); ctx.lineTo(W-14,H/2+12); ctx.lineTo(W-10,H/2+14); ctx.stroke();
+
+    ctx.font = '11px "JetBrains Mono"';
+    ctx.fillStyle = 'rgba(224,112,74,'+sa+')';
+    ctx.textAlign = 'center';
+    ctx.fillText('SNAKE — Māyā / False perception', W/2, H/2 + 50);
+    ctx.restore();
+  }
+
+  /* ── loss indicator ── */
+  var loss = Math.max(0, 1 - alpha).toFixed(2);
+  ctx.font = '11px "JetBrains Mono"';
+  ctx.fillStyle = '#6a6088';
+  ctx.textAlign = 'left';
+  ctx.fillText('L(θ) = ' + loss + '  ·  λ = ' + ((1-alpha).toFixed(2)), 16, H-12);
+
+  /* ── output label ── */
+  var out = document.getElementById('rs-out');
+  if(v < 25) { out.textContent = 'Snake (Māyā) — L(θ) = ' + loss; }
+  else if(v < 60) { out.textContent = 'Transitioning — both perceived'; }
+  else { out.textContent = 'Rope (Brahman) — L(θ) → 0'; }
+}
+drawRS(8);
+
+/* ══════════════════════════════════
+   METAPHOR 2 — CLAY-POTS
+══════════════════════════════════ */
+var currentShape = 'pot';
+function selectShape(s) {
+  currentShape = s;
+  ['pot','plate','cup'].forEach(function(x){
+    document.getElementById('sb-'+x).classList.toggle('active', x===s);
+  });
+  drawPot(s);
+}
+function drawPot(s) {
+  var c = document.getElementById('pot-canvas');
+  if(!c) return;
+  var W=c.offsetWidth||400, H=150;
+  c.width=W; c.height=H;
+  var ctx=c.getContext('2d');
+  ctx.fillStyle='#181428'; ctx.fillRect(0,0,W,H);
+
+  var cx=W/2, cy=H/2;
+  ctx.fillStyle='rgba(46,196,160,0.18)';
+  ctx.strokeStyle='#2ec4a0';
+  ctx.lineWidth=1.5;
+
+  if(s==='pot'){
+    ctx.beginPath(); ctx.ellipse(cx,cy+35,35,11,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillRect(cx-28,cy-20,56,55);
+    ctx.beginPath(); ctx.ellipse(cx,cy-20,28,9,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(cx,cy-34,18,6,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  } else if(s==='plate'){
+    ctx.beginPath(); ctx.ellipse(cx,cy+10,54,16,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(cx,cy,54,14,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillRect(cx-50,cy-14,100,14);
+  } else {
+    ctx.beginPath(); ctx.ellipse(cx,cy+38,22,7,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillRect(cx-20,cy-30,40,68);
+    ctx.beginPath(); ctx.ellipse(cx,cy-30,22,7,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    /* handle */
+    ctx.beginPath(); ctx.arc(cx+30,cy+5,14,Math.PI*1.5,Math.PI*0.5); ctx.strokeStyle='#2ec4a0'; ctx.lineWidth=3; ctx.stroke(); ctx.strokeStyle='#2ec4a0'; ctx.lineWidth=1.5;
+  }
+
+  /* encoder arrow */
+  ctx.fillStyle='#2ec4a0'; ctx.font='11px "JetBrains Mono"';
+  ctx.textAlign='left'; ctx.fillText('φ('+s+')', 16, 22);
+  ctx.strokeStyle='rgba(46,196,160,0.4)'; ctx.lineWidth=1;
+  ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(60,20); ctx.lineTo(W-20,20); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='rgba(46,196,160,0.7)'; ctx.textAlign='right';
+  ctx.fillText('Z_Clay', W-16, 22);
+
+  /* Z vector bar */
+  var zvec=[0.913,0.891,0.927,0.908];
+  var bw=Math.min(40,(W-80)/(zvec.length+1));
+  zvec.forEach(function(z,i){
+    var bx=80+i*(bw+8);
+    var bh=(H-60)*z;
+    ctx.fillStyle='rgba(46,196,160,0.25)';
+    ctx.fillRect(bx, H-10-bh, bw-2, bh);
+    ctx.strokeStyle='rgba(46,196,160,0.6)'; ctx.lineWidth=1;
+    ctx.strokeRect(bx, H-10-bh, bw-2, bh);
+    ctx.fillStyle='#5edbc0'; ctx.font='10px "JetBrains Mono"';
+    ctx.textAlign='center';
+    ctx.fillText(z.toFixed(2), bx+(bw-2)/2, H-12-bh-4);
+  });
+}
+
+/* ══════════════════════════════════
+   METAPHOR 3 — NETI NETI
+══════════════════════════════════ */
+var koshas=['body','prana','mind','vijana','ananda'];
+var kStripped={body:false,prana:false,mind:false,vijana:false,ananda:false};
+function stripKosha(k){
+  kStripped[k]=true;
+  document.getElementById('kr-'+k).classList.add('stripped');
+  document.getElementById('kb-'+k).disabled=true;
+  var allDone=koshas.every(function(x){return kStripped[x];});
+  if(allDone) document.getElementById('atman-reveal').classList.add('show');
+}
+function resetNeti(){
+  koshas.forEach(function(k){
+    kStripped[k]=false;
+    document.getElementById('kr-'+k).classList.remove('stripped');
+    document.getElementById('kb-'+k).disabled=false;
+  });
+  document.getElementById('atman-reveal').classList.remove('show');
+}
+
+/* ══════════════════════════════════
+   METAPHOR 4 — TAT TVAM ASI
+══════════════════════════════════ */
+function updateTT(){
+  document.getElementById('jiva-val').textContent = document.getElementById('jiva-sl').value + '°';
+  document.getElementById('para-val').textContent = document.getElementById('para-sl').value + '°';
+  drawTT();
+}
+function drawTT(){
+  var c=document.getElementById('tt-canvas');
+  if(!c) return;
+  var W=c.offsetWidth||400, H=200;
+  c.width=W; c.height=H;
+  var ctx=c.getContext('2d');
+  ctx.fillStyle='#181428'; ctx.fillRect(0,0,W,H);
+
+  var jivaAngle = parseInt(document.getElementById('jiva-sl').value) * Math.PI/180;
+  var paraAngle = parseInt(document.getElementById('para-sl').value) * Math.PI/180;
+  var cx=W/2, cy=H-20, r=Math.min(W/2-40, H-30);
+
+  /* unit semicircle */
+  ctx.strokeStyle='rgba(180,160,255,0.12)';
+  ctx.lineWidth=1;
+  ctx.beginPath(); ctx.arc(cx,cy,r,Math.PI,0); ctx.stroke();
+
+  /* grid lines */
+  for(var a=0; a<=180; a+=30){
+    var rad=a*Math.PI/180;
+    ctx.strokeStyle='rgba(180,160,255,0.05)'; ctx.lineWidth=0.5;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+r*Math.cos(Math.PI-rad), cy-r*Math.sin(Math.PI-rad));
+    ctx.stroke();
+  }
+
+  /* Jīva vector */
+  var jx=cx+r*Math.cos(Math.PI-jivaAngle);
+  var jy=cy-r*Math.sin(Math.PI-jivaAngle);
+  ctx.strokeStyle='#e0704a'; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(jx,jy); ctx.stroke();
+  ctx.fillStyle='#e0704a';
+  ctx.beginPath(); ctx.arc(jx,jy,5,0,Math.PI*2); ctx.fill();
+  ctx.font='12px "JetBrains Mono"'; ctx.fillStyle='#f0956e'; ctx.textAlign='center';
+  ctx.fillText('Jīva', jx+(jx<cx?-28:28), jy-8);
+
+  /* Para vector */
+  var px=cx+r*Math.cos(Math.PI-paraAngle);
+  var py=cy-r*Math.sin(Math.PI-paraAngle);
+  ctx.strokeStyle='#7c6af5'; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(px,py); ctx.stroke();
+  ctx.fillStyle='#7c6af5';
+  ctx.beginPath(); ctx.arc(px,py,5,0,Math.PI*2); ctx.fill();
+  ctx.font='12px "JetBrains Mono"'; ctx.fillStyle='#a599f7'; ctx.textAlign='center';
+  ctx.fillText('Īśvara', px+(px<cx?-32:32), py-8);
+
+  /* angle arc */
+  var gap=Math.abs(paraAngle-jivaAngle)*180/Math.PI;
+  if(gap>1){
+    ctx.strokeStyle='rgba(201,168,76,0.3)'; ctx.lineWidth=1;
+    ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.arc(cx,cy,r*0.25, Math.PI-Math.max(jivaAngle,paraAngle), Math.PI-Math.min(jivaAngle,paraAngle)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font='10px "JetBrains Mono"'; ctx.fillStyle='rgba(201,168,76,0.6)';
+    ctx.textAlign='center'; ctx.fillText(gap.toFixed(0)+'°', cx, cy-r*0.32);
+  }
+
+  /* dot product & stats */
+  var dot=Math.cos(jivaAngle-paraAngle);
+  document.getElementById('tt-dot').textContent=dot.toFixed(3);
+  document.getElementById('tt-dot').style.color=dot>0.95?'#2ec4a0':dot<0?'#e0704a':'#e8c97a';
+  document.getElementById('tt-angle').textContent=gap.toFixed(1)+'°';
+  document.getElementById('tt-tr').textContent='1.000';
+  var out=document.getElementById('tt-out');
+  var pill=document.getElementById('tt-pill');
+  if(gap<8){ out.textContent='Non-dual — Tat tvam asi'; }
+  else if(gap<35){ out.textContent='Approaching unity — Māyā thinning'; }
+  else { out.textContent='Duality — separation visible'; }
+
+  /* dot product formula */
+  ctx.font='11px "JetBrains Mono"'; ctx.fillStyle='rgba(106,96,136,0.8)';
+  ctx.textAlign='left'; ctx.fillText('u·v = cos(θ) = '+dot.toFixed(3), 14, H-8);
+}
+drawTT();
+</script>
+</body>
+</html>
